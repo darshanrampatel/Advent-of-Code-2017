@@ -52,15 +52,8 @@ namespace AoC2017
 
         class PassphraseComparer : IEqualityComparer<string>
         {
-            public bool Equals(string x, string y)
-            {
-                return String.Concat(x.OrderBy(c => c)).Equals(String.Concat(y.OrderBy(c => c)));
-            }
-
-            public int GetHashCode(string obj)
-            {
-                return base.GetHashCode();
-            }
+            public bool Equals(string x, string y) => x.OrderBy(c => c).SequenceEqual(y.OrderBy(c => c));
+            public int GetHashCode(string obj) => base.GetHashCode();
         }
 
         public static void Run()
