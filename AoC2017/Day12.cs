@@ -31,8 +31,6 @@ namespace AoC2017
 
         public static int Part2(string input)
         {
-            var sw = new Stopwatch();
-            sw.Start();
             var list = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
             foreach (var entry in list)
             {
@@ -60,8 +58,6 @@ namespace AoC2017
                     idx++;
                 }
             }
-            sw.Stop();
-            Console.WriteLine($"Time taken: {sw.Elapsed}");
             return groups.Count;
         }
 
