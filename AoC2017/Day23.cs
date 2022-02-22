@@ -25,15 +25,9 @@ namespace AoC2017
                 { "h", 0 }
             };
             int mulCount = 0;
-            int its = 0;
 
             for (int i = 0; i < instructions.Count; i++)
             {
-                its++;
-                if (its % 1000000 == 0)
-                {
-                    Console.WriteLine(its);
-                }
                 var instruction = instructions[i];
                 var splits = instruction.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
                 var command = splits[0];
@@ -80,7 +74,62 @@ namespace AoC2017
 
         public static int Part2(string input)
         {
-            return 0;
+            var instructions = input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var registers = new Dictionary<string, long>
+            {
+                { "a", 1 },
+                { "b", 0 },
+                { "c", 0 },
+                { "d", 0 },
+                { "e", 0 },
+                { "f", 0 },
+                { "g", 0 },
+                { "h", 0 }
+            };
+
+            for (int i = 0; i < instructions.Count; i++)
+            {
+                var instruction = instructions[i];
+                var splits = instruction.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+                var command = splits[0];
+                var registerToModify = splits[1];
+
+                long v = 0;
+                if (splits.Count > 2)
+                {
+                    var value = splits[2];
+                    if (long.TryParse(value, out long result))
+                    {
+                        v = result;
+                    }
+                    else
+                    {
+                        v = registers[value];
+                    }
+                }
+                switch (command)
+                {
+                    case "set":
+                        registers[registerToModify] = v;
+                        break;
+                    case "sub":
+                        registers[registerToModify] -= v;
+                        break;
+                    case "mul":
+                        registers[registerToModify] *= v;
+                        break;
+                    case "jnz":
+                        if ((int.TryParse(registerToModify, out int test) && test != 0) || registers[registerToModify] != 0)
+                        {
+                            i = i + (int)v;
+                            i--;
+                        }
+                        break;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+            return (int)registers["h"];
         }
 
         public static void Run()
